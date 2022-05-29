@@ -1,9 +1,7 @@
 module Main where
 
 import Lib
-
-fact 0 = 1
-fact n | n > 0 = n * fact (n - 1)
+import Fact
 
 fib 0 = 0
 fib 1 = 1
