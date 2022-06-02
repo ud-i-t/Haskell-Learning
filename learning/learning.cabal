@@ -37,6 +37,7 @@ library
 executable learning-exe
   main-is: Main.hs
   other-modules:
+      Color
       Fact
       Paths_learning
   hs-source-dirs:
