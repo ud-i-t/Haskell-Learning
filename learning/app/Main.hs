@@ -19,6 +19,11 @@ main = do
     print $ Color.mix Color.Red Color.Green
     print $ Color.mix Color.Red $ Color.mix Color.Green Color.Blue
     print $ p3
+    print $ Product.contains (Product.Rect 2 2 3 3) (Product.Point 1 1)
+    print $ Product.contains (Product.Rect 2 2 3 3) (Product.Point 2 2)
+    print $ Product.contains (Product.Rect 2 2 3 3) (Product.Point 3 3)
+    print $ Product.contains (Product.Rect 2 2 3 3) (Product.Point 4 4)
+    print $ Product.contains (Product.Rect 2 2 3 3) (Product.Point 5 5)
 
     where
         a = 1
@@ -27,4 +32,3 @@ main = do
         p1 = Product.Point 2 3
         p2 = Product.Point 1 1
         p3 = Product.offset p1 p2
-    
