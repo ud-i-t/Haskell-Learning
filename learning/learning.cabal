@@ -39,6 +39,7 @@ executable learning-exe
   other-modules:
       Color
       Fact
+      Product
       Paths_learning
   hs-source-dirs:
       app

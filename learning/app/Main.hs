@@ -3,6 +3,7 @@ module Main where
 import Lib
 import qualified Fact
 import qualified Color
+import qualified Product
 
 fib 0 = 0
 fib 1 = 1
@@ -17,9 +18,13 @@ main = do
     print $ Color.mix Color.Red Color.Red
     print $ Color.mix Color.Red Color.Green
     print $ Color.mix Color.Red $ Color.mix Color.Green Color.Blue
+    print $ p3
 
     where
         a = 1
         b = 2
         c = a + b
+        p1 = Product.Point 2 3
+        p2 = Product.Point 1 1
+        p3 = Product.offset p1 p2
     
