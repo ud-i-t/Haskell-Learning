@@ -3,27 +3,46 @@ module Main where
 import Lib
 import qualified Fact
 import qualified Color
-import qualified Shape
+import Shape
 
 fib 0 = 0
 fib 1 = 1
 fib n = fib (n - 1) + fib (n - 2)
 
+data Foo = TestInt Int 
+        | TestStr String
+        deriving Show
+        
+foo (TestInt 1) = "bar"
+foo (TestStr "1") = "baz"
+foo _ = "?"
 
 main = do
     print c
     print $ Fact.fact 5
     print $ fib 6
     print $ fib 7
+    
     print $ Color.mix Color.Red Color.Red
     print $ Color.mix Color.Red Color.Green
     print $ Color.mix Color.Red $ Color.mix Color.Green Color.Blue
     print $ p3
-    print $ Shape.contains (Shape.Rect 2 2 3 3) (Shape.Point 1 1)
-    print $ Shape.contains (Shape.Rect 2 2 3 3) (Shape.Point 2 2)
-    print $ Shape.contains (Shape.Rect 2 2 3 3) (Shape.Point 3 3)
-    print $ Shape.contains (Shape.Rect 2 2 3 3) (Shape.Point 4 4)
-    print $ Shape.contains (Shape.Rect 2 2 3 3) (Shape.Point 5 5)
+
+    print $ contains (Rect 2 2 3 3) (Point 1 1)
+    print $ contains (Rect 2 2 3 3) (Point 2 2)
+    print $ contains (Rect 2 2 3 3) (Point 3 3)
+    print $ contains (Rect 2 2 3 3) (Point 4 4)
+    print $ contains (Rect 2 2 3 3) (Point 5 5)
+    print $ contains (Rect3D 2 2 2 3 3 3) (Point3D 1 1 1)
+    print $ contains (Rect3D 2 2 2 3 3 3) (Point3D 2 2 2)
+    print $ contains (Rect3D 2 2 2 3 3 3) (Point3D 3 3 3)
+    print $ contains (Rect3D 2 2 2 3 3 3) (Point3D 4 4 4)
+    print $ contains (Rect3D 2 2 2 3 3 3) (Point3D 5 5 5)
+
+    print $ foo $ TestInt 1
+    print $ foo $ TestStr "1"
+    print $ foo $ TestStr "2"
+    -- print $ foo "0" 関数の引数は同一の型しか受け付けないのでこれは無理
 
     where
         a = 1
