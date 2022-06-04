@@ -1,8 +1,8 @@
 module ShapeRecord where
 import Lib
 
-data Point = Point Int Int deriving Show
-data Rect = Rect Int Int Int Int deriving Show
+data Point = Point {px :: Int, py :: Int} deriving Show
+data Rect = Rect {rx :: Int, ry :: Int, rw :: Int, rh :: Int} deriving Show
 
 contains (Rect rx ry rw rh) (Point px py)
     | px < rx = False 

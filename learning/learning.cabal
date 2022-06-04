@@ -40,6 +40,7 @@ executable learning-exe
       Color
       Fact
       Shape
+      ShapeRecord
       Paths_learning
   hs-source-dirs:
       app
