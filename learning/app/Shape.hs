@@ -1,4 +1,4 @@
-module Product where
+module Shape where
 import Lib
 
 data Point = Point Int Int deriving Show

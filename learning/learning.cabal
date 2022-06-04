@@ -39,7 +39,7 @@ executable learning-exe
   other-modules:
       Color
       Fact
-      Product
+      Shape
       Paths_learning
   hs-source-dirs:
       app
