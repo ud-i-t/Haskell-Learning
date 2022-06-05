@@ -4,6 +4,7 @@ import Lib
 import qualified Fact
 import qualified Color
 import ShapeRecord
+import Action
 
 fib 0 = 0
 fib 1 = 1
@@ -45,6 +46,11 @@ main = do
     print $ foo $ TestStr "2"
     -- print $ foo "0" 関数の引数は同一の型しか受け付けないのでこれは無理
 
+    r <- randNum
+    print r
+    print =<< randNum
+    randNum >>= print
+    
     where
         a = 1
         b = 2
