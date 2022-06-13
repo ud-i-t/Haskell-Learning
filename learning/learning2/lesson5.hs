@@ -3,10 +3,7 @@ ifEven myFunction x = if even x
                       else x
 
 getIfEven f = (\x -> ifEven f x)
-double x = x * 2
-
 genIfXCven x = (\f -> ifEven f x) -- evenのときに処理する値をクロージャにする 処理内容を後から渡す
-
 
 getRequestUrl host apikey resourse id = host ++
                                         "/" ++
@@ -66,3 +63,15 @@ addressLetterV2 = flipBinaryArgs addressLetter
 addressLetterNY = addressLetterV2 "ny"
 
 subtract2 = flip (-) 2
+
+-- 練習問題
+inc n = n + 1
+double n = n * 2
+square n = n ^ 2
+
+ifEvenInc = ifEven inc
+ifEvenDouble = ifEven double
+ifEvenSquare = ifEven square
+
+
+binaryPartialApplication f x = (\y -> f x y)
