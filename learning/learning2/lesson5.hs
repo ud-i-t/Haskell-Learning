@@ -17,7 +17,7 @@ getRequestUrl host apikey resourse id = host ++
                                         apikey
 
 genHostRequestBuilder host = (\apikey resourse id -> getRequestUrl host apikey resourse id) 
-exampleUrlBuilder = genHostRequestBuilder "http://example.com"
+exampleUrlBuilder = getRequestUrl "http://example.com"
 
 genApiRequestBuilder hostBuilder apiKey = (\resourse id ->
                                             hostBuilder apiKey resourse id)
@@ -25,3 +25,44 @@ myExampleUrlBuilder = genApiRequestBuilder exampleUrlBuilder "1337hAsk311"
 
 genApiHostRequestBuilder hostBuilder apiKey resourse = (\id -> hostBuilder apiKey resourse id)
 myExampleUrlBuilder2 = genApiRequestBuilder exampleUrlBuilder "1337hAsk311" "hoge"
+
+add4 a b c d = a + b + c + d
+
+bookIdUrlBuilder = getRequestUrl "http://example.com" "1337hAsk311" "book"
+
+-- lesson4で作った関数
+sfOffice name = if lastName < "L"
+                then nameText
+                     ++ " - PO Box 1234 - San Francisco, CA, 94111"
+                else nameText
+                     ++ " - PO Box 1010 - San Francisco, CA, 94109"
+    where lastName = snd name
+          nameText = (fst name) ++ " " ++ lastName
+
+nyOffice name = nameText ++ ": PO Box 789 - New York, NY, 10013"
+    where nameText = (fst name) ++ " " ++ (snd name)
+
+renoOffice name = nameText ++ ": PO Box 456 - Reno, NV, 89523"
+    where nameText = snd name
+
+dcOffice name = nameText ++ "- PO Box 5166 - Washington DC, dc, 44941"
+    where nameText = (fst name) ++ " " ++ (snd name) ++ "Esq"
+
+getLocationFunction location = case location of
+    "ny" -> nyOffice
+    "sf" -> sfOffice
+    "reno" -> renoOffice
+    "dc" -> dcOffice
+    _ -> (\name -> (fst name) ++ " " ++ (snd name))
+
+addressLetter name location = locationFunction name
+    where locationFunction = getLocationFunction location
+-- end
+
+-- 引数が2つの関数の引数をひっくり返す
+flipBinaryArgs binaryFunction = (\x y -> binaryFunction y x)
+
+addressLetterV2 = flipBinaryArgs addressLetter
+addressLetterNY = addressLetterV2 "ny"
+
+subtract2 = flip (-) 2
