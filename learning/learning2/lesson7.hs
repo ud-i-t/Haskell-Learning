@@ -16,3 +16,6 @@ myHead [] = error "No head for empty list"
 
 myTail (_:xs) = xs
 myTail [] = []
+
+myGCD a 0 = a
+myGCD a b = myGCD b (a `mod` b)
