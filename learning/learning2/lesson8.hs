@@ -10,3 +10,17 @@ myTake n (x:xs) = x : rest
 finiteCycle (first:rest) = first:rest ++ [first]
 
 myCycle (first:rest) = first:myCycle (rest++[first])
+
+myReverse [] = []
+myReverse [x]= [x]
+myReverse (x:xs) = (myReverse xs) ++ [x]
+
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+
+fastFib _ _ 0 = 0
+fastFib _ _ 1 = 1
+fastFib _ _ 2 = 1
+fastFib n1 n2 3 = n1 + n2
+fastFib n1 n2 counter = fastFib (n1 + n2) n1 (counter - 1)
