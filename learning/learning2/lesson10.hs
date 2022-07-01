@@ -26,8 +26,23 @@ setHP aRobot newHP = aRobot (\(n,a,h) -> robot (n,a,newHP))
 printRobot aRobot = aRobot (\(n,a,h) -> n ++
                                         " attack:" ++ (show a) ++
                                         " hp:" ++ (show h))
+damage aRobot attackDamage = aRobot (\(n,a,h) -> robot (n,a,h-attackDamage))
+
+fight aRobot defender = damage defender attack
+    where attack = if getHP aRobot > 10
+                   then getAttack aRobot
+                   else 0
 
 killerRobot = robot ("Kill3r", 25, 200)
+gentleGiant = robot ("Mr. friendly", 10, 300)
+
 nicerRobot = setName killerRobot "kitty"
 gentlerRobot = setAtttack killerRobot 5
 softerRobot = setHP killerRobot 50
+
+gRound1 = fight killerRobot gentleGiant
+kRound1 = fight gentleGiant killerRobot
+gRound2 = fight gRound1 kRound1
+kRound2 = fight kRound1 gRound1
+gRound3 = fight gRound2 kRound2
+kRound3 = fight kRound2 gRound2
