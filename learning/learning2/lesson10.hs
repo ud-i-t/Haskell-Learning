@@ -46,3 +46,13 @@ gRound2 = fight gRound1 kRound1
 kRound2 = fight kRound1 gRound1
 gRound3 = fight gRound2 kRound2
 kRound3 = fight kRound2 gRound2
+
+-- ロボットの拡張
+robotHPList aRobotList = map getHP aRobotList
+-- threeRoundFight robotA robotB = threeRoundFight nextA nextB
+--     where nextA = fight robotA robotB
+--           nextB = fight robotB robotA
+
+robotList = [killerRobot,gentleGiant,softerRobot]
+multiFight aRobot robotList = map aFight robotList 
+    where aFight = fight aRobot
