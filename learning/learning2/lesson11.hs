@@ -25,3 +25,16 @@ ifEven :: (Int -> Int) -> Int -> Int
 ifEven f n = if even n
              then f n
              else n 
+
+-- 型変数
+simple :: a -> a
+simple x = x
+
+-- 練習問題
+-- filter :: (a -> a) -> [a] -> [a]
+
+-- tail :: a:[a] -> [a]
+-- head :: a:[a] -> a
+-- 型aはリストでないので空にできない。空のリストを返すheadは作れない
+
+-- myFoldl :: (a -> b -> a) -> a -> [b] -> a
