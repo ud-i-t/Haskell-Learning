@@ -45,4 +45,3 @@ names :: [Name]
 names = [Name ("Emil", "Cioran"),
          Name ("Eugene", "Thacker"),
          Name ("Friedrich", "Nietzche")]
-
