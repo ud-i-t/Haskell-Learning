@@ -21,3 +21,28 @@ fourLetterEncoder :: [FourLetterAlphabet] -> [FourLetterAlphabet]
 fourLetterEncoder vals = map rot4l vals
     where alphabetSize = 1 + fromEnum (maxBound :: FourLetterAlphabet)
           rot4l = rotN alphabetSize
+
+data ThreeLetterAlphabet = Alpha 
+                         | Beta
+                         | Kappa deriving (Show, Enum, Bounded)
+
+threeLetterMessage :: [ThreeLetterAlphabet]
+threeLetterMessage = [Alpha, Alpha, Beta, Alpha, Kappa]
+
+threeLetterEncorder :: [ThreeLetterAlphabet] -> [ThreeLetterAlphabet]
+threeLetterEncorder vals = map rot3l vals
+ where alphaSize = 1 + fromEnum (maxBound :: ThreeLetterAlphabet)
+       rot3l = rotN alphaSize
+
+rotNdecorder :: (Bounded a, Enum a) => Int -> a -> a
+rotNdecorder n c = toEnum rotation
+    where halfN = n `div` 2
+          offset = if even n
+                   then fromEnum c + halfN
+                   else 1 + fromEnum c + halfN
+          rotation = offset `mod` n
+
+threeLetterDecorder :: [ThreeLetterAlphabet] -> [ThreeLetterAlphabet]
+threeLetterDecorder vals = map rot3ldecorder vals
+    where alphaSize = 1 + fromEnum (maxBound :: ThreeLetterAlphabet)
+          rot3ldecorder = rotNdecorder alphaSize
