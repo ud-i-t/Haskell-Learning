@@ -40,3 +40,26 @@ bitsToInt bits = sum (map (\x -> 2^(snd x)) trueLocations)
 
 bitsToChar :: Bits -> Char
 bitsToChar bits = toEnum (bitsToInt bits)
+
+-- 15.4 ワンタイムパッド
+myPad :: String
+myPad = "Shhhhhh"
+
+myPlainText :: String
+myPlainText = "Haskell"
+
+applyOTP' :: String -> String -> [Bits]
+applyOTP' pad plainText = map (\pair -> (fst pair) `xor` (snd pair))
+                              (zip padBits plainTextBits)
+    where padBits = map charToBits pad
+          plainTextBits = map charToBits plainText
+
+applyOTP :: String -> String -> String
+applyOTP pad plainText = map bitsToChar bitList
+    where bitList = applyOTP' pad plainText
+
+class Cipher a where
+    encode :: a -> String -> String
+    decode :: a -> String -> String
+
+data Rot = Rot
