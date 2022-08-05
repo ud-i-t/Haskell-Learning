@@ -63,3 +63,6 @@ class Cipher a where
     decode :: a -> String -> String
 
 data Rot = Rot
+
+instance Cipher Rot where
+    encode Rot text = rotE
