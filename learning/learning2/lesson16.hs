@@ -1,16 +1,30 @@
 -- lesson16
 -- 直積型
+-- 構造体っぽい
 data AuthorName = AuthorName {
     firstName :: String 
     , lastName :: String
 }
 
 data Book = Book {
-    author :: AuthorName
-    , isbn :: String 
-    , title :: String
-    , year :: Int
-    , price ::  Double
+      author    :: Creator
+    , isbn      :: String 
+    , title     :: String
+    , year      :: Int
+    , bookPrice :: Double
+}
+
+data VinylRecord = VinylRecord {
+      artist      :: Creator
+    , recordTitle :: String
+    , recordYear  :: Int
+    , recordPrice :: Double
+} 
+
+data CollectableToy = CollectableToy {
+      name           :: String
+    , description    :: String
+    , toyPrice       :: Double
 }
 
 -- 直和型
@@ -29,3 +43,23 @@ data Artist = Person Name | Band String
 hpLovecraft :: Creator
 hpLovecraft = AuthorCreator
               (Author (TwoInitialsWithLast 'H' 'P' "Lovecraft"))
+
+data StoreItem = BookItem Book 
+               | RecordItem VinylRecord
+               | ToyItem CollectableToy
+
+price :: StoreItem -> Double
+price (BookItem book) = bookPrice book
+price (RecordItem record) = recordPrice record
+price (ToyItem toy) = toyPrice toy
+
+afro :: Creator
+afro = ArtistCreator (Band "Afろ")
+
+yurucamp :: StoreItem
+yurucamp = BookItem (Book
+    afro
+    "56161641614"
+    "ゆるキャン"
+    2022
+    790)
