@@ -47,11 +47,13 @@ hpLovecraft = AuthorCreator
 data StoreItem = BookItem Book 
                | RecordItem VinylRecord
                | ToyItem CollectableToy
+               | Pamph Pamphlet
 
 price :: StoreItem -> Double
 price (BookItem book) = bookPrice book
 price (RecordItem record) = recordPrice record
 price (ToyItem toy) = toyPrice toy
+price (Pamph pamph) = 0
 
 afro :: Creator
 afro = ArtistCreator (Band "Afろ")
@@ -63,3 +65,15 @@ yurucamp = BookItem (Book
     "ゆるキャン"
     2022
     790)
+
+-- Practice1
+data Pamphlet = Pamphlet {
+     pamphTitle          :: String
+    ,pamphDescription    :: String
+    ,phoneNumber         :: String
+}
+
+samplePamph :: StoreItem
+samplePamph = Pamph(Pamphlet "title" "setsumei" "999-8888")
+
+-- practice2
