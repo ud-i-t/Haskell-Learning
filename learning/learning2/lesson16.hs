@@ -77,3 +77,36 @@ samplePamph :: StoreItem
 samplePamph = Pamph(Pamphlet "title" "setsumei" "999-8888")
 
 -- practice2
+data Circle = Circle {
+    radius :: Double
+}
+
+data Square =  Square {
+     side :: Double
+}
+
+data Rectangle = Rectangle {
+     width :: Double
+    ,height :: Double
+}
+
+data Shape = CircleShape Circle | SquareShape Square | RectangleShape Rectangle
+
+circumference :: Shape -> Double
+circumference (CircleShape c) = (radius c)*2*3.14
+circumference (SquareShape s) = (side s)*4
+circumference (RectangleShape r) = ((width r)+(height r))*2
+
+area :: Shape -> Double
+area (CircleShape c) = (radius c)*(radius c)*3.14
+area (SquareShape s) = (side s)^2
+area (RectangleShape r) = (width r)*(height r)
+
+sampleCircle :: Shape
+sampleCircle = CircleShape (Circle 3.0)
+
+sampleSquare :: Shape
+sampleSquare = SquareShape (Square 4.0)
+
+sampleRectangle :: Shape
+sampleRectangle = RectangleShape (Rectangle 5.0 3.0)
