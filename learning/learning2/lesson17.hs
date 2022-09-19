@@ -28,9 +28,11 @@ instance Semigroup Integer where
 -- (<>) の型シグネチャ
 -- (<>) :: Semigroup a => a -> a -> a
 
-data Color = Red | Yellow | Blue | Green | Purple | Orange | Brown deriving (Show, Eq)
+data Color = Red | Yellow | Blue | Green | Purple | Orange | Brown | White deriving (Show, Eq)
 
 instance Semigroup Color where
+    (<>) White b = b
+    (<>) a White = a
     (<>) Red Blue = Purple
     (<>) Blue Red = Purple
     (<>) Yellow Blue = Green
@@ -45,6 +47,9 @@ instance Semigroup Color where
 
 -- 結合律: <>演算子を適用する順序によって結果が変わらないこと
 
+instance Monoid Color where
+    mempty = White
+    mappend = (<>)
 
 elemtest = (`elem` [Red, Blue, Purple])
 
@@ -54,29 +59,51 @@ elemtest = (`elem` [Red, Blue, Purple])
 --  mappend :: a -> a -> a (加算)
 --  mconcat :: [a] -> a
 
-type Events = [String]
-type Probs = [Double]
+data Events = Events [String]
+data Probs = Probs [Double]
 data PTable = PTable Events Probs
 
+combineEvents :: Events -> Events -> Events
+combineEvents (Events e1) (Events e2) = Events (cartCombine combiner e1 e2) --文字列で直積を作ってからEventsを作成
+    where combiner = (\x y -> mconcat [x,"-",y])
+
+instance Semigroup Events where
+    (<>) = combineEvents
+
+instance Monoid Events where
+    mempty = (Events [])
+    mappend = (<>)
+
+combineProbs :: Probs -> Probs -> Probs
+combineProbs (Probs p1) (Probs p2) = Probs (cartCombine (*) p1 p2)
+
+instance Semigroup Probs where
+    (<>) = combineProbs
+
+instance Monoid Probs where
+    mempty = (Probs [])
+    mappend = (<>)
+
+
 instance Show PTable where
-    show (PTable events probs) = mconcat pairs
+    show (PTable (Events events) (Probs probs)) = mconcat pairs
         where pairs = zipWith showPair events probs
 
 instance Semigroup PTable where
-    (<>) ptable1 (PTable [] []) = ptable1
-    (<>) (PTable [] []) ptable2 = ptable2
+    (<>) ptable1 (PTable (Events []) (Probs [])) = ptable1
+    (<>) (PTable (Events []) (Probs [])) ptable2 = ptable2
     (<>) (PTable e1 p1) (PTable e2 p2) = createPTable newEvents newProbs
-        where newEvents = combineEvents e1 e2
-              newProbs = combineProbs p1 p2
+        where newEvents = e1 <> e2
+              newProbs = p1 <> p2
 
 instance Monoid PTable where
-    mempty = PTable [] []
+    mempty = PTable (Events []) (Probs [])
     mappend = (<>)
 
 createPTable :: Events -> Probs -> PTable
-createPTable events probs = PTable events normalizedProbs
+createPTable events (Probs probs) = PTable events normalizedProbs
   where totalProbs = sum probs
-        normalizedProbs = map (\x -> x/totalProbs) probs --全ての確率の和が1になるようにする
+        normalizedProbs = Probs (map (\x -> x/totalProbs) probs) --全ての確率の和が1になるようにする
 
 showPair :: String -> Double -> String
 showPair event prob = mconcat [event,"|", show prob,"\n"]
@@ -90,18 +117,11 @@ cartCombine func l1 l2 = zipWith func newL1 cycledL2
           -- cycle は単一の無限リストを返す
           cycledL2 = cycle l2
 
-combineEvents :: Events -> Events -> Events
-combineEvents e1 e2 = cartCombine combiner e1 e2
-    where combiner = (\x y -> mconcat [x,"-",y])
-
-combineProbs :: Probs -> Probs -> Probs
-combineProbs p1 p2 = cartCombine (*) p1 p2
-
 -- testData
 coin :: PTable
-coin = createPTable ["heads","tails"] [0.5,0.5]
+coin = createPTable (Events ["heads","tails"]) (Probs [0.5,0.5])
 
 spinner :: PTable
-spinner = createPTable ["red","blue","green"] [0.1,0.2,0.7]
+spinner = createPTable (Events ["red","blue","green"]) (Probs [0.1,0.2,0.7])
 
 -- 次は練習問題
