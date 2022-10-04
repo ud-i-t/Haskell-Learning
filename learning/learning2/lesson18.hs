@@ -2,6 +2,7 @@
 -- パラメータ化された型
 
 import Data.List
+import qualified Data.Map as Map
 
 -- 任意の型を保持できる抽象コンテナBox
 data Box a = Box a deriving Show
@@ -62,3 +63,28 @@ itemCount4 = ("Paper", 12.4)
 
 itemInventry :: [(String, Int)]
 itemInventry = [itemCount1, itemCount2, itemCount3]
+
+--Data.Map
+data Organ = Heart | Brain | Kidney | Spleen deriving (Show,Eq)
+
+organs :: [Organ]
+organs = [Heart,Heart,Brain,Spleen,Spleen,Kidney]
+
+ids :: [Int]
+ids = [2,7,13,14,21,24]
+
+organPairs :: [(Int,Organ)]
+organPairs = zip ids organs
+
+organCatalog :: Map.Map Int Organ
+organCatalog = Map.fromList organPairs
+
+--練習問題
+--Q18-1
+tripleMap :: (a -> b) -> Triple a -> Triple b
+tripleMap func (Triple x y z) = Triple (func x) (func y) (func z)
+
+boxMap :: (a -> b) -> Box a -> Box b
+boxMap func (Box x) = Box (func x)
+
+--Q18-2
