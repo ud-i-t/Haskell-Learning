@@ -65,7 +65,7 @@ itemInventry :: [(String, Int)]
 itemInventry = [itemCount1, itemCount2, itemCount3]
 
 --Data.Map
-data Organ = Heart | Brain | Kidney | Spleen deriving (Show,Eq)
+data Organ = Heart | Brain | Kidney | Spleen deriving (Show,Eq,Ord,Enum)
 
 organs :: [Organ]
 organs = [Heart,Heart,Brain,Spleen,Spleen,Kidney]
@@ -88,3 +88,18 @@ boxMap :: (a -> b) -> Box a -> Box b
 boxMap func (Box x) = Box (func x)
 
 --Q18-2
+--Organをキーにできるようにする
+values :: [Organ]
+values = map snd (Map.toList organCatalog) 
+
+-- 全臓器の種類のリスト
+allOrgans :: [Organ]
+allOrgans = [Heart .. Spleen]
+
+-- 各種臓器の個数を数える
+organCounts :: [Int]
+organCounts = map countOrgan allOrgans
+    where countOrgan = (\organ -> (length . filter (== organ)) values)
+
+organInventry :: Map.Map Organ Int
+organInventry = Map.fromList (zip allOrgans organCounts)
