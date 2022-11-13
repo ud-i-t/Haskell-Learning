@@ -2,6 +2,7 @@
 -- Maybe型
 
 import qualified Data.Map as Map
+import Data.List
 
 --lesson18のコード
 data Organ = Heart | Brain | Kidney | Spleen deriving (Show,Eq,Ord,Enum)
@@ -32,3 +33,25 @@ countOrgan :: Organ -> [Maybe Organ] -> Int
 countOrgan organ available = length (filter
                                         (\x -> x == Just organ)
                                         available)
+
+isSomething :: Maybe Organ -> Bool
+isSomething Nothing = False
+isSomething (Just _) = True
+
+justTheOrgans :: [Maybe Organ]
+justTheOrgans = filter isSomething availableOrgans
+
+showOrgan :: Maybe Organ -> String
+showOrgan (Just organ) = show organ
+showOrgan Nothing = ""
+
+organList :: [String]
+organList = map showOrgan justTheOrgans
+
+cleanList :: String
+cleanList = intercalate ", " organList
+
+-- Quick Check 19-2
+numOrZero :: Maybe Int -> Int
+numOrZero (Just x) = x
+numOrZero Nothing = 0
