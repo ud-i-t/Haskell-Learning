@@ -83,3 +83,18 @@ report ::(Location,Container) -> String
 report (location,container) = show container ++
                               " in the " ++
                               show location
+
+processAndReport :: (Maybe Organ) -> String
+processAndReport (Just organ) = report (process organ)
+processAndReport Nothing = "error"
+
+processRequest :: Int -> Map.Map Int Organ -> String
+processRequest id catalog = processAndReport organ
+    where organ = Map.lookup id catalog
+
+-- Quick check 19-3
+-- report :: Maybe (Location,Container) -> String
+-- report (Just (location,container)) = show container ++
+--                                    " in the " ++
+--                                    show location
+-- report Nothing = "error"
