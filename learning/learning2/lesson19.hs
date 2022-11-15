@@ -98,3 +98,10 @@ processRequest id catalog = processAndReport organ
 --                                    " in the " ++
 --                                    show location
 -- report Nothing = "error"
+
+-- 練習問題
+emptyDrawers :: [Maybe Organ] -> Int
+emptyDrawers contents = length (filter
+                                        (\x -> x == Nothing)
+                                        contents)
+                                        
