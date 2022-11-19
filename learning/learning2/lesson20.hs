@@ -60,3 +60,26 @@ ts4 = fileToTS file4
 insertMaybePair :: Ord k => Map.Map k v -> (k, Maybe v) -> Map.Map k v
 insertMaybePair myMap (_,Nothing) = myMap
 insertMaybePair myMap (key, (Just value)) = Map.insert key value myMap
+
+combineTS :: TS a -> TS a -> TS a
+combineTS (TS [] []) ts2 = ts2
+combineTS ts1 (TS [] []) = ts1
+combineTS (TS t1 v1) (TS t2 v2) = TS completeTimes combinedValues
+    where bothTimes = mconcat [t1, t2]
+          completeTimes = [(minimum t1) .. (maximum t2)]
+          tvMap = foldl insertMaybePair Map.empty (zip t1 v1)
+          updatedMap = foldl insertMaybePair tvMap (zip t2 v2)
+          combinedValues = map (\v -> Map.lookup v updatedMap) completeTimes
+
+-- TSをSemigroupのインスタンスにする
+instance Semigroup (TS a) where
+    (<>) = combineTS
+
+-- TSをMonoidのインスタンスにする
+instance Monoid (TS a) where
+    mempty = TS [] []
+    mappend = (<>)
+
+-- 4つの時系列データを結合
+tsAll :: TS Double
+tsAll = mconcat [ts1, ts2, ts3, ts4]
