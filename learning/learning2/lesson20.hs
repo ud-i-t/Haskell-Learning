@@ -55,3 +55,8 @@ ts3 = fileToTS file3
 
 ts4 :: TS Double
 ts4 = fileToTS file4
+
+-- MapはMaybeを受け付けないので、値が有効の場合のみinsertするヘルパー関数を作成
+insertMaybePair :: Ord k => Map.Map k v -> (k, Maybe v) -> Map.Map k v
+insertMaybePair myMap (_,Nothing) = myMap
+insertMaybePair myMap (key, (Just value)) = Map.insert key value myMap
