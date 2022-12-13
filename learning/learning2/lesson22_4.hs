@@ -13,5 +13,6 @@ toInts lines = map read (myLines lines)
 main :: IO ()
 main = do
     userInput <- getContents
-    let numbers = toInts userInput
-    print (sum numbers)
+    putStrLn userInput
+    --let numbers = toInts userInput
+    --print (sum numbers)
