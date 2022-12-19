@@ -42,3 +42,10 @@ combinedTextMonoid = mconcat ["some", " ", "text"]
 
 combinedTextSemigroup :: T.Text
 combinedTextSemigroup = "some" <> " " <> "text"
+
+-- quick check 23-3
+myLines :: T.Text -> [T.Text]
+myLines str = T.splitOn "\n" str
+
+myUnlines :: [T.Text] -> T.Text
+myUnlines list = T.intercalate "\n" list
