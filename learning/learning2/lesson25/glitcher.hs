@@ -12,11 +12,17 @@ intToChar int = toEnum safeInt
 intToBC :: Int -> BC.ByteString
 intToBC int = BC.pack [intToChar int]
 
-replaceByte :: Int -> Int -> BC.ByteString ->BC.ByteString
+replaceByte :: Int -> Int -> BC.ByteString -> BC.ByteString
 replaceByte loc charVal bytes = mconcat [before,newChar,after]
     where (before, rest) = BC.splitAt loc bytes
           after = BC.drop 1 rest -- 1バイト削除
           newChar = intToBC charVal
+
+reverseByte :: Int -> Int -> BC.ByteString -> BC.ByteString
+reverseByte begin end bytes = mconcat [before,replaced,after]
+    where (before, rest) = BC.splitAt begin bytes
+          (target, after) = BC.splitAt end rest
+          replaced = BC.reverse target
 
 bcInt :: BC.ByteString
 bcInt = "abcdef"
@@ -27,6 +33,13 @@ randomReplaceByte bytes = do
     location <- randomRIO(1,bytesLength)
     charVal <- randomRIO(0,255)
     return (replaceByte location charVal bytes)
+
+randomReverseByte :: BC.ByteString -> IO BC.ByteString
+randomReverseByte bytes = do
+    let bytesLength = BC.length bytes
+    begin <- randomRIO(1,bytesLength)
+    end <- randomRIO(begin,bytesLength)
+    return (reverseByte begin end bytes)
 
 sortSection :: Int -> Int -> BC.ByteString -> BC.ByteString
 sortSection start size bytes = mconcat [before,changed,after]
@@ -42,11 +55,11 @@ randomSortSelection bytes = do
     return (sortSection start sectionSize bytes)
 
 glitcheAction :: [BC.ByteString -> IO BC.ByteString]
-glitcheAction = [randomReplaceByte
+glitcheAction = [randomReverseByte
                 ,randomSortSelection
-                ,randomReplaceByte
+                ,randomReverseByte
                 ,randomSortSelection
-                ,randomReplaceByte]
+                ,randomReverseByte]
 
 main :: IO ()
 main = do
