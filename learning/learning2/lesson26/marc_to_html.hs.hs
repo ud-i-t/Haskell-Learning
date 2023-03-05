@@ -68,6 +68,57 @@ allRecords marcStream = if marcStream == B.empty
                         else next : allRecords rest
     where (next, rest) = nextAndRest marcStream
 
+type MarcDirectoryRaw = B.ByteString
+
+-- ベースアドレスを取得する
+getBaseAddress :: MarcLeaderRaw -> Int
+getBaseAddress leader = rawToInt (B.take 5 remainder)
+    where remainder = B.drop 12 leader
+
+getDirectoryLength :: MarcLeaderRaw -> Int
+getDirectoryLength leader = getBaseAddress leader - (leaderLength + 1)
+
+getDirectory :: MarcRecordRaw -> MarcDirectoryRaw
+getDirectory record = B.take directoryLength afterLeader
+    where directoryLength = getDirectoryLength record
+          afterLeader = B.drop leaderLength record
+
+type MarcDirectoryEntryRaw = B.ByteString
+
+dirEntryLength :: Int
+dirEntryLength = 12
+
+splitDirectory :: MarcDirectoryRaw -> [MarcDirectoryEntryRaw]
+splitDirectory directory = if directory == B.empty
+                           then []
+                           else nextEntry : splitDirectory restEntries
+    where (nextEntry, restEntries) = B.splitAt dirEntryLength directory
+
+data FieldMetaData = FieldMetaData { tag :: T.Text
+                                   , fieldLength :: Int
+                                   , fieldStart :: Int}
+
+makeFieldMetaData :: MarcDirectoryEntryRaw -> FieldMetaData
+makeFieldMetaData entry = FieldMetaData textTag theLength theStart
+    where (theTag,rest) = B.splitAt 3 entry
+          textTag = E.decodeUtf8 theTag
+          (rawLength,rawStart) = B.splitAt 4 rest
+          theLength = rawToInt rawLength
+          theStart = rawToInt rawStart
+
+getFieldMetaData :: [MarcDirectoryEntryRaw] -> [FieldMetaData]
+getFieldMetaData rawEntries = map makeFieldMetaData rawEntries
+
+type FieldText = T.Text
+
+getTextField :: MarcRecordRaw -> FieldMetaData -> FieldText
+getTextField record fieldMetaData = E.decodeUtf8 byteStringValue
+    where recordLength = getRecordLength record
+          baseAddress = getBaseAddress record
+          baseRecord = B.drop baseAddress record
+          baseAtEntry = B.drop (fieldStart fieldMetaData) baseRecord
+          byteStringValue = B.take (fieldLength fieldMetaData) baseAtEntry
+
 main :: IO ()
 main = do
     marcData <- B.readFile "sample.mrc"
