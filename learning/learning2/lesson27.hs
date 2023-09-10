@@ -1,6 +1,4 @@
 -- lesson27
-{-# LANGUAGE OverloadedStrings #-} -- 言語拡張: Text型にリテラル値を使用
-import System.IO
 
 -- 27.1
 successfulRequest :: Maybe Int
@@ -13,3 +11,9 @@ failedRequest = Nothing
 incMaybe :: Maybe Int -> Maybe Int
 incMaybe (Just n) = Just (n + 1)
 incMaybe Nothing = Nothing
+
+-- 一般化 (すでにGHC.Baseに標準の実装がある)
+-- instance Functor Maybe where
+--   fmap func (Just n) = Just (func n)
+--   fmap func Nothing = Nothing
+
